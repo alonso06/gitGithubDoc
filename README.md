@@ -4,9 +4,9 @@
 
 1. Conceptos básicos
 
-2. Comando en repositorio local
+2. Comandos para trabajar solo con repositorio local
 
-3. Comandos en repositorio remoto (Github)
+3. Comandos para trabajar con repositorio local y remoto (Git - Github)
 
 4. Buenas prácticas
 
@@ -44,7 +44,10 @@ La función de ramas es un método de git que permite unir dos ramas. La fusión
 
 Por otra parte los conflictos al fusionar surgen cuando las ramas a fusionar han realizado modificaciones en las mismas líneas de un archivo, por lo que git entra en conflicto al intentar decidir que cambio conservar.
 
-## 2. Comando en repositorio local
+### Conexión SSH
+Ssh es una forma de comunicación con un repositorio remoto. Este tipo de conexión tiene como ventaja el no solicitar usuario y contraseña por cada acción.
+
+## 2. Comandos para trabajar solo con repositorio local
 
 ### Listar comandos en consola
 
@@ -102,13 +105,13 @@ Opciones:
 git clean -n
 
 # Afecta al elemento especifico
-git clean <nameFileOrDirectory> -n
+git clean <FileNameOrDirectoryName> -n
 ```
 
 ### Agregar al stage area (estado preparado)
 
 > [!NOTE]
-> Es posible agregar todos los cambios de la raiz ".", archivos "nameFile.extension" o archivos con una extensión especifica "*.nameExtension"  
+> Es posible agregar todos los cambios de la raiz ".", archivos "fileName.extension" o archivos con una extensión especifica "*.extensionName"  
 
 ``` sh
 git add .
@@ -140,13 +143,13 @@ Ejemplo
 ```
 
 ### Realizar un commit (estado confirmado)
-``` sh
 
-git commit -m "Message commit"
+``` sh
+git commit -m "Message of commit"
 
 # Pasar de modificado a preparado 
-```
-git commit -am "Message commit"
+git commit -am "Message of commit"
+``` 
 
 Modificar el último commit
 
@@ -190,23 +193,23 @@ Eliminar elemento sin convervarlo
 
 ``` sh
 # Manual
-rm nameFile
-git add nameFile
-git commit -m "message remove nameFile"
+rm fileName
+git add fileName
+git commit -m "message remove fileName"
 
 # Usando git
-git rm nameFile
-git commit -m "message remove nameFile"
+git rm fileName
+git commit -m "message remove fileName"
 ```
 
 Eliminar elemento conservándolo (pasandolo a un estado de modificado)
 
 ``` sh
 # Ver que cambios se realizarán
-git rm --dry-run --cached <nameFile>
+git rm --dry-run --cached <fileName>
 
 # Eliminar directorio
-git rm -r --cached <nameDir>
+git rm -r --cached <directoryName>
 ```
 
 ### Manejo de ramas
@@ -224,14 +227,14 @@ git branch --sort = -committerdate
 Crear ramas
 
 ``` sh
-git branch <nameBranch>
-git switch -c <nameBranch>
+git branch <branchName>
+git switch -c <branchName>
 ```
 
 Cambiar de rama
 
 ``` sh
-git switch <nameBranch>
+git switch <branchName>
 ```
 
 Fusionar ramas (**merge**)
@@ -240,7 +243,7 @@ Fusionar ramas (**merge**)
 > El comando une el contenido de la rama desde la rama en la que se ejecuta el comando. Generalmente se usa desde la rama main
 
 ``` sh
-git merge <nameOtherBranch>  
+git merge <OtherBranchName>  
 
 # Agregar comentario al hacer un commit
 git merge --edit 
@@ -249,10 +252,47 @@ git merge --edit
 Eliminar ramas
 
 ``` sh
-git branch -d <nameBranch>
+git branch -d <branchName>
 
 # Eliminar ramas fusionadas desde el repositorio remoto
 git remote prune origin --dry-run 
 git remote prune origin
 ```
+
+## 3. Comandos para trabajar con repositorio local y remoto (Git - Github)
+
+### Subir un repositorio local a uno remoto
+
+``` sh
+# Agregar un repositorio remoto
+# Es posible agregar más de un repositorio remoto
+# <alias>: nombre referencial para el repositorio remoto, usualmente se emplea el nombre "origin"
+# <remoteRepositoryName>: dirección ssh o https del repositorio remoto creado previamente.
+git remote add <alias> <remoteRepositoryName>
+```
+
+Listar repositorios remotos
+
+``` sh
+git remote
+```
+
+### Crear un repositorio local a partir de uno remoto
+
+``` sh
+# <directoryName>: nombre del directorio(existente) en el que se clonará el repositorio. Es opcional
+
+git clone <remoteRepositoryName> <directoryName>
+```
+ 
+### Traer cambios a repositorio local y enviar cambios a repositorio remoto
+
+``` sh
+# Actualizar repositorio local
+git pull <aliasRemoteRepository> <branchName>
+
+# Enviar cambios al repositorio local
+git push <aliasRemoteRepository> <branchName>
+```
+###
 
